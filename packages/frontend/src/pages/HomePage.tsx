@@ -29,12 +29,11 @@ const HomePage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const products = useSelector((state: RootState) => state.product.items);
   const error = useSelector((state: RootState) => state.product.error);
-   const navigate = useNavigate();
-   const isAuthenticated = useSelector(
-     (state: RootState) => state.user.isAuthenticated
-   );
+  const navigate = useNavigate();
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.user.isAuthenticated
+  );
   const user = useSelector((state: RootState) => state.user.user);
-
 
   useEffect(() => {
     dispatch(fetchProducts({}));
@@ -52,18 +51,18 @@ const HomePage: React.FC = () => {
     );
   });
 
-   const handleAddToCart = (product: Product) => {
-     if (!isAuthenticated) {
-       navigate("/login");
-     } else if (user && user.isAdmin) {
-       alert(
-         "Only normal users can order. Please login to your normal user account."
-       );
-     } else {
-       const cartItem = { ...product, quantity: 1 };
-       dispatch(addToCart(cartItem));
-     }
-   };
+  const handleAddToCart = (product: Product) => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    } else if (user && user.isAdmin) {
+      alert(
+        "Only normal users can order. Please login to your normal user account."
+      );
+    } else {
+      const cartItem = { ...product, quantity: 1 };
+      dispatch(addToCart(cartItem));
+    }
+  };
 
   return (
     <Container maxWidth="lg">
@@ -134,15 +133,36 @@ const HomePage: React.FC = () => {
         <Grid container spacing={4}>
           {filteredProducts.map((product: Product) => (
             <Grid item key={product._id} xs={12} sm={6} md={4}>
-              <Card>
+              <Card
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
                 <CardMedia
                   component="img"
                   height="200"
                   image={product.image}
                   alt={product.name}
+                  sx={{ objectFit: "contain" }}
                 />
-                <CardContent>
-                  <Typography gutterBottom variant="h6" component="div">
+                <CardContent
+                  sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}
+                >
+                  <Typography
+                    gutterBottom
+                    variant="h6"
+                    component="div"
+                    sx={{
+                      height: "2.5em",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                    }}
+                  >
                     <Link
                       to={`/product/${product._id}`}
                       style={{ textDecoration: "none", color: "inherit" }}
@@ -150,7 +170,18 @@ const HomePage: React.FC = () => {
                       {product.name}
                     </Link>
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" noWrap>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                      height: "3em",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                    }}
+                  >
                     {product.description}
                   </Typography>
                   <Typography variant="h6" color="primary" mt={1}>
