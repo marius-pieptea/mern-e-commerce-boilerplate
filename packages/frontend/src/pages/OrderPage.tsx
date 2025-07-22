@@ -28,11 +28,14 @@ const OrderPage: React.FC = () => {
         return;
       }
       try {
-        const response = await axios.get(`http://localhost:5000/api/orders`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/api/orders`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         dispatch(setOrders(response.data));
       } catch (error) {

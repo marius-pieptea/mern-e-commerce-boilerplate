@@ -18,7 +18,7 @@ const RequestPasswordResetPage: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/users/reset-password`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/users/reset-password`,
         { email }
       );
       setMessage("Check your email for further instructions.");

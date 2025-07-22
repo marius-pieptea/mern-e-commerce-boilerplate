@@ -23,18 +23,21 @@ const AdminUsers: React.FC = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const { data } = await axios.get(`http://localhost:5000/api/users`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/users`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       setUsers(data);
     };
     fetchUsers();
   }, []);
 
   const deleteUser = async (id: string) => {
-    await axios.delete(`http://localhost:5000/api/users/${id}`, {
+    await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/users/${id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -49,7 +52,7 @@ const AdminUsers: React.FC = () => {
 
   const saveUser = async (id: string) => {
     const { data } = await axios.put(
-      `http://localhost:5000/api/users/${id}`,
+      `${import.meta.env.VITE_API_BASE_URL}/api/users/${id}`,
       editUserData,
       {
         headers: {

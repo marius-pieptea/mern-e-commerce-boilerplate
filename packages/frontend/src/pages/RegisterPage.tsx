@@ -22,7 +22,7 @@ const RegisterPage: React.FC = () => {
     const user = { name, email, password };
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/users/register`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/users/register`,
         user
       );
       navigate("/login");

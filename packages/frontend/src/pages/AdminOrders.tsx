@@ -26,11 +26,14 @@ const AdminOrders: React.FC = () => {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const { data } = await axios.get(`http://localhost:5000/api/orders`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/orders`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       setOrders(data);
     };
     fetchOrders();
@@ -43,11 +46,15 @@ const AdminOrders: React.FC = () => {
 
   const handleSaveClick = async (id: string) => {
     try {
-      await axios.put(`http://localhost:5000/api/orders/${id}`, editOrderData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      await axios.put(
+        `${import.meta.env.VITE_API_BASE_URL}/api/orders/${id}`,
+        editOrderData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       setOrders(
         orders.map((order) =>
           order._id === id ? { ...order, ...editOrderData } : order
@@ -65,11 +72,14 @@ const AdminOrders: React.FC = () => {
 
   const handleDeleteClick = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:5000/api/orders/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      await axios.delete(
+        `${import.meta.env.VITE_API_BASE_URL}/api/orders/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       setOrders(orders.filter((order) => order._id !== id));
     } catch (error) {
       console.error("Error deleting order:", error);

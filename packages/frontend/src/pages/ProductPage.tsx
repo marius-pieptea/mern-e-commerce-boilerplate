@@ -37,7 +37,7 @@ const ProductPage: React.FC = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/products/${id}`
+          `${import.meta.env.VITE_API_BASE_URL}/api/products/${id}`
         );
         setProduct(response.data);
       } catch (error) {

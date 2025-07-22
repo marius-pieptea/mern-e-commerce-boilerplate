@@ -39,7 +39,7 @@ const UserPage: React.FC = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/users/profile`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/users/profile`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -104,7 +104,7 @@ const UserPage: React.FC = () => {
       }
 
       const response = await axios.put(
-        `http://localhost:5000I/api/users/profile`,
+        `${import.meta.env.VITE_API_BASE_URL}I/api/users/profile`,
         dataToSend,
         {
           headers: {

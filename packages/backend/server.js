@@ -13,7 +13,7 @@ const setupInMemoryDB = require("./setupInMemoryDb"); // Adjust the path as nece
 
 dotenv.config();
 
-const corsOptions = { origin: process.env.CLIENT_URL };
+const corsOptions = { origin: process.env.CLIENT_URL, credentials: true };
 
 const app = express();
 app.use(cors(corsOptions));

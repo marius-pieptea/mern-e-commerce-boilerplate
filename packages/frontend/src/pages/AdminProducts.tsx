@@ -40,8 +40,10 @@ const AdminProducts: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/products`);
-        setProducts(data);
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/api/products`
+        );
+        setProducts(Array.isArray(data) ? data : data.products || []);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -51,11 +53,14 @@ const AdminProducts: React.FC = () => {
 
   const deleteProduct = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:5000/api/products/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      await axios.delete(
+        `${import.meta.env.VITE_API_BASE_URL}/api/products/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       setProducts(products.filter((product) => product._id !== id));
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -101,8 +106,10 @@ const AdminProducts: React.FC = () => {
       const productWithId = { ...newProduct, _id: uuidv4() };
       await dispatch(addProduct(productWithId));
       setOpen(false);
-      const { data } = await axios.get(`http://localhost:5000/api/products`);
-      setProducts(data);
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/products`
+      );
+      setProducts(Array.isArray(data) ? data : data.products || []);
     } catch (error) {
       console.error("Error adding product:", error);
     }
@@ -120,7 +127,7 @@ const AdminProducts: React.FC = () => {
           updateProduct({ id: editProductId, updates: editedProduct })
         ).unwrap();
         setProducts(
-          products.map((product) =>
+          products?.map((product) =>
             product._id === editProductId
               ? { ...product, ...editedProduct }
               : product
@@ -225,7 +232,7 @@ const AdminProducts: React.FC = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {products.map((product) => (
+          {products?.map((product) => (
             <TableRow key={product._id}>
               <TableCell>
                 {editProductId === product._id ? (

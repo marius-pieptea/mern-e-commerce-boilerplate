@@ -17,9 +17,12 @@ const initialState: ProductState = {
 export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
   async (filters: Record<string, any>) => {
-    const { data } = await axios.get(`http://localhost:5000/api/products`, {
-      params: filters,
-    });
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_API_BASE_URL}/api/products`,
+      {
+        params: filters,
+      }
+    );
     return data;
   }
 );
@@ -28,7 +31,7 @@ export const addProduct = createAsyncThunk(
   "products/addProduct",
   async (newProduct: Omit<Product, "_id">) => {
     const response = await axios.post(
-      `http://localhost:5000/api/products`,
+      `${import.meta.env.VITE_API_BASE_URL}/api/products`,
       newProduct,
       {
         headers: {
@@ -44,7 +47,7 @@ export const updateProduct = createAsyncThunk(
   "product/updateProduct",
   async ({ id, updates }: { id: string; updates: Partial<Product> }) => {
     const response = await axios.put(
-      `http://localhost:5000/api/products/${id}`,
+      `${import.meta.env.VITE_API_BASE_URL}/api/products/${id}`,
       updates,
       {
         headers: {
