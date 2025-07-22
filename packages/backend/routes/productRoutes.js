@@ -15,15 +15,26 @@ const productController = require("../controllers/productController");
  *         - name
  *         - price
  *         - category
+ *         - image
  *       properties:
  *         name:
  *           type: string
+ *           example: "Lenovo 15.6 Inch Full HD Notebook"
  *         price:
  *           type: number
+ *           example: 10.99
  *         category:
  *           type: string
+ *           example: "Laptops"
  *         description:
  *           type: string
+ *           example: "Intel Quad N5100 4 x 2.80 GHz, 16GB DDR4, 1000 GB SSD, Intel UHD, HDMI, Webcam, Bluetooth, USB 3.0, WiFi, Windows 11 Prof. 64 Bit"
+ *         image:
+ *           type: string
+ *           example: "https://example.com/image.jpg"
+ *         stock:
+ *           type: number
+ *           example: 100
  *         reviews:
  *           type: array
  *           items:
@@ -31,10 +42,16 @@ const productController = require("../controllers/productController");
  *             properties:
  *               user:
  *                 type: string
+ *                 description: ObjectId reference to User
+ *                 example: "507f1f77bcf86cd799439011"
  *               rating:
  *                 type: number
+ *                 minimum: 1
+ *                 maximum: 5
+ *                 example: 5
  *               comment:
  *                 type: string
+ *                 example: "Great product!"
  */
 
 /**

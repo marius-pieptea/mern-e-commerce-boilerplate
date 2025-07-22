@@ -65,7 +65,7 @@ export const addReview = createAsyncThunk(
     const token = localStorage.getItem("token");
 
     const { data } = await axios.post(
-      `process.env.SERVER_API/api/products/${productId}/reviews`,
+      `${import.meta.env.VITE_API_BASE_URL}/api/products/${productId}/reviews`,
       review,
       {
         headers: {

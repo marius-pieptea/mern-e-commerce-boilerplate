@@ -175,10 +175,7 @@ const setupInMemoryDB = async () => {
   });
   const uri = mongoServer.getUri();
 
-  await mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  await mongoose.connect(uri);
 
   await Product.insertMany(defaultProducts);
   await User.insertMany(defaultUsers);

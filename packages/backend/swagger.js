@@ -13,8 +13,24 @@ const options = {
 
     servers: [
       {
-        url: "process.env.SERVER_API",
+        url: `http://localhost:5006`,
         description: "Development server",
+      },
+    ],
+
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+
+    security: [
+      {
+        bearerAuth: [],
       },
     ],
   },

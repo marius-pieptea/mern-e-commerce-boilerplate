@@ -13,7 +13,14 @@ const setupInMemoryDB = require("./setupInMemoryDb"); // Adjust the path as nece
 
 dotenv.config();
 
-const corsOptions = { origin: process.env.CLIENT_URL, credentials: true };
+const corsOptions = {
+  origin: [
+    process.env.CLIENT_URL,
+    `http://localhost:${process.env.PORT}`,
+    `http://localhost:5006`, // Additional fallback for swagger setup
+  ],
+  credentials: true,
+};
 
 const app = express();
 app.use(cors(corsOptions));

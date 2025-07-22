@@ -57,10 +57,7 @@ const products = [
 ];
 
 // Connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/eshop", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect("mongodb://localhost:27017/eshop");
 
 // Insert sample data
 const seedProducts = async () => {

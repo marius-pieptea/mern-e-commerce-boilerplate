@@ -104,7 +104,7 @@ const UserPage: React.FC = () => {
       }
 
       const response = await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}I/api/users/profile`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/users/profile`,
         dataToSend,
         {
           headers: {

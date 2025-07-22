@@ -6,6 +6,46 @@ const userController = require("../controllers/userController");
 
 /**
  * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - name
+ *         - email
+ *         - password
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: The user's full name
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: The user's email address
+ *         password:
+ *           type: string
+ *           minLength: 6
+ *           description: The user's password (minimum 6 characters)
+ *         isAdmin:
+ *           type: boolean
+ *           default: false
+ *           description: Whether the user has admin privileges
+ *         resetPasswordToken:
+ *           type: string
+ *           description: Token for password reset
+ *         resetPasswordExpire:
+ *           type: string
+ *           format: date-time
+ *           description: Password reset token expiration date
+ */
+
+/**
+ * @swagger
  * /api/users/register:
  *   post:
  *     summary: Register a new user
