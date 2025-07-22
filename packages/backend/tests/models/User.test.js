@@ -7,12 +7,13 @@ const bcrypt = require("bcryptjs");
 let mongoServer;
 
 beforeAll(async () => {
-  mongoServer = await MongoMemoryServer.create();
-  const uri = mongoServer.getUri();
-  await mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+  mongoServer = await MongoMemoryServer.create({
+    instance: {
+      port: 61889, // Use a different port to avoid conflicts
+    },
   });
+  const uri = mongoServer.getUri();
+  await mongoose.connect(uri);
 });
 
 afterAll(async () => {

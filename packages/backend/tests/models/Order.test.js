@@ -7,12 +7,13 @@ const User = require("../../models/User");
 let mongoServer;
 
 beforeAll(async () => {
-  mongoServer = await MongoMemoryServer.create();
-  const uri = mongoServer.getUri();
-  await mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+  mongoServer = await MongoMemoryServer.create({
+    instance: {
+      port: 61888, // avoid conflicts
+    },
   });
+  const uri = mongoServer.getUri();
+  await mongoose.connect(uri);
 });
 
 afterAll(async () => {
@@ -42,6 +43,7 @@ describe("Order Model Test", () => {
       description: "Description for test product",
       image: "image.jpg",
       stock: 100,
+      category: "Electronics",
     });
     await product.save();
   });
@@ -96,30 +98,30 @@ describe("Order Model Test", () => {
     expect(savedOrder.isPaid).toBe(false);
   });
 
-it("should fail to create an order without required fields", async () => {
-  const orderData = {
-    user: user._id,
-    orderItems: [{}], // Empty object to trigger nested validation errors
-    totalPrice: 0,
-  };
+  it("should fail to create an order without required fields", async () => {
+    const orderData = {
+      user: user._id,
+      orderItems: [{}], // Empty object to trigger nested validation errors
+      totalPrice: 0,
+    };
 
-  const order = new Order(orderData);
+    const order = new Order(orderData);
 
-  let err;
-  try {
-    await order.save();
-  } catch (error) {
-    err = error;
-  }
+    let err;
+    try {
+      await order.save();
+    } catch (error) {
+      err = error;
+    }
 
-  expect(err).toBeInstanceOf(mongoose.Error.ValidationError);
-  expect(err.errors.user).toBeUndefined(); // User is provided, so no error here
-  expect(err.errors["orderItems.0.name"]).toBeDefined();
-  expect(err.errors["orderItems.0.qty"]).toBeDefined();
-  expect(err.errors["orderItems.0.price"]).toBeDefined();
-  expect(err.errors["orderItems.0.product"]).toBeDefined();
-  expect(err.errors.totalPrice).toBeUndefined(); // Total price is provided, so no error here
-});
+    expect(err).toBeInstanceOf(mongoose.Error.ValidationError);
+    expect(err.errors.user).toBeUndefined(); // User is provided, so no error here
+    expect(err.errors["orderItems.0.name"]).toBeDefined();
+    expect(err.errors["orderItems.0.qty"]).toBeDefined();
+    expect(err.errors["orderItems.0.price"]).toBeDefined();
+    expect(err.errors["orderItems.0.product"]).toBeDefined();
+    expect(err.errors.totalPrice).toBeUndefined(); // Total price is provided, so no error here
+  });
 
   it("should calculate the total price correctly", async () => {
     const orderData = {

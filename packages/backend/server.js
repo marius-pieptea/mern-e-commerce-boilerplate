@@ -38,16 +38,16 @@ const PORT = process.env.PORT || 5000;
 const connectDB = async (retries = 5, delay = 5000) => {
   while (retries) {
     try {
-      console.log("Setting up in-memory MongoDB");
-      await setupInMemoryDB();
-      console.log("In-memory MongoDB setup successfully");
+      console.log("Connecting to MongoDB Atlas");
+      await mongoose.connect(process.env.MONGO_URI);
+      console.log("MongoDB Atlas connected successfully");
       break;
     } catch (error) {
-      console.error("Failed to setup in-memory database", error);
+      console.error("Failed to connect to MongoDB Atlas", error);
       retries -= 1;
       if (retries === 0) {
-        console.error("Exhausted all retries. Skipping database setup.");
-        break;
+        console.error("Exhausted all retries. Exiting...");
+        process.exit(1);
       }
       console.log(`Retries left: ${retries}`);
       console.log(`Retrying in ${delay / 1000} seconds...`);

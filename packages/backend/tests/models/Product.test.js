@@ -6,12 +6,13 @@ const Product = require("../../models/Product");
 let mongoServer;
 
 beforeAll(async () => {
-  mongoServer = await MongoMemoryServer.create();
-  const uri = mongoServer.getUri();
-  await mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+  mongoServer = await MongoMemoryServer.create({
+    instance: {
+      port: 61887, // Use a different port to avoid conflicts
+    },
   });
+  const uri = mongoServer.getUri();
+  await mongoose.connect(uri);
 });
 
 afterAll(async () => {
@@ -31,6 +32,7 @@ describe("Product Model Test", () => {
       description: "Description for test product",
       image: "image.jpg",
       stock: 100,
+      category: "Electronics",
     };
 
     const product = new Product(productData);
@@ -45,12 +47,12 @@ describe("Product Model Test", () => {
     expect(savedProduct.reviews).toEqual([]);
   });
 
-
   it("should set default values for price and stock", async () => {
     const productData = {
       name: "Test Product",
       description: "Description for test product",
       image: "image.jpg",
+      category: "Electronics",
     };
 
     const product = new Product(productData);
@@ -67,6 +69,7 @@ describe("Product Model Test", () => {
       description: "Description for test product",
       image: "image.jpg",
       stock: 100,
+      category: "Electronics",
     };
 
     const product = new Product(productData);

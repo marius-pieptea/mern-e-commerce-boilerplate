@@ -145,7 +145,7 @@ router.get("/:id", productController.getProductById);
  *           type: string
  *         required: true
  *         description: Product ID
- *       - in: 
+ *       - in:
  *         name: Authorization
  *         schema:
  *           type: string

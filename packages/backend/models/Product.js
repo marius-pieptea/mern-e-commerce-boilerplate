@@ -20,7 +20,6 @@ const productSchema = new mongoose.Schema(
     stock: { type: Number, required: true, default: 0 },
     reviews: [reviewSchema],
     category: { type: String, required: true },
-  
   },
   {
     timestamps: true,

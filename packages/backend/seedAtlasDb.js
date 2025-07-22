@@ -1,9 +1,11 @@
-const { MongoMemoryServer } = require("mongodb-memory-server");
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 const Product = require("./models/Product");
 const User = require("./models/User");
 const Order = require("./models/Order");
 const bcrypt = require("bcryptjs");
+
+dotenv.config();
 
 const defaultProducts = [
   {
@@ -163,22 +165,58 @@ const defaultOrders = [
   },
 ];
 
-const setupInMemoryDB = async () => {
-  const mongoServer = await MongoMemoryServer.create({
-    binary: {
-      version: "6.0.5",
-      debug: true,
-    },
-  });
-  const uri = mongoServer.getUri();
+const seedAtlasDatabase = async () => {
+  try {
+    // Connect to MongoDB Atlas
+    console.log("Connecting to MongoDB Atlas...");
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("Connected to MongoDB Atlas successfully!");
 
-  await mongoose.connect(uri);
+    // Clear existing data (optional - comment out if you want to keep existing data)
+    console.log("Clearing existing data...");
+    await Product.deleteMany({});
+    await User.deleteMany({});
+    await Order.deleteMany({});
+    console.log("Existing data cleared!");
 
-  await Product.insertMany(defaultProducts);
-  await User.insertMany(defaultUsers);
-  await Order.insertMany(defaultOrders);
+    // Insert seed data
+    console.log("Inserting seed data...");
 
-  console.log("In-memory MongoDB setup complete with default data");
+    const insertedProducts = await Product.insertMany(defaultProducts);
+    console.log(`✅ ${insertedProducts.length} products inserted`);
+
+    const insertedUsers = await User.insertMany(defaultUsers);
+    console.log(`✅ ${insertedUsers.length} users inserted`);
+
+    const insertedOrders = await Order.insertMany(defaultOrders);
+    console.log(`✅ ${insertedOrders.length} orders inserted`);
+
+    console.log("\n🎉 MongoDB Atlas seeding completed successfully!");
+    console.log("\nSeed data summary:");
+    console.log(`- Admin User: admin@example.com (password: adminpassword)`);
+    console.log(`- Regular User: user@example.com (password: userpassword)`);
+    console.log(
+      `- ${insertedProducts.length} products in categories: Laptops, Desktops, Phones`
+    );
+    console.log(`- ${insertedOrders.length} sample orders`);
+  } catch (error) {
+    console.error("❌ Error seeding database:", error);
+  } finally {
+    // Close the connection
+    await mongoose.connection.close();
+    console.log("Database connection closed.");
+    process.exit(0);
+  }
 };
 
-module.exports = setupInMemoryDB;
+// Only run the seeding if this file is executed directly
+if (require.main === module) {
+  seedAtlasDatabase();
+}
+
+module.exports = {
+  seedAtlasDatabase,
+  defaultProducts,
+  defaultUsers,
+  defaultOrders,
+};
